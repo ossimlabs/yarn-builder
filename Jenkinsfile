@@ -50,7 +50,7 @@ node(POD_LABEL){
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
-                  docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder
+                  docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder .
                 """
             }
         }
@@ -61,7 +61,7 @@ node(POD_LABEL){
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
-                  docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder
+                  docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder .
                 """
             }
         }
