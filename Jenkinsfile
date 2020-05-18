@@ -1,4 +1,4 @@
-VERSION = new File("Version.txt").getText()
+
 properties([
     parameters ([
         //string(name: 'BUILD_NODE', defaultValue: 'POD_LABEL', description: 'The build node to run on'),
@@ -51,7 +51,7 @@ node(POD_LABEL){
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
-                  docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:${VERSION} .
+                  docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:$(cat Version.txt) .
                 """
             }
         }
@@ -62,7 +62,7 @@ node(POD_LABEL){
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
-                  docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:
+                  docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:$(cat Version.txt)
                 """
             }
         }
