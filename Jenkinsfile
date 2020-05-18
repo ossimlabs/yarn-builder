@@ -1,6 +1,6 @@
 properties([
     parameters ([
-        //string(name: 'BUILD_NODE', defaultValue: 'POD_LABEL', description: 'The build node to run on'),
+        
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
     ]),
     pipelineTriggers([
@@ -17,7 +17,7 @@ podTemplate(
       image: 'docker:latest',
       ttyEnabled: true,
       command: 'cat',
-      privileged: true,
+      privileged: true
     )
   ],
   volumes: [
@@ -27,9 +27,11 @@ podTemplate(
     ),
   ]
 )
+
 {
+
 node(POD_LABEL){
-    VERSION = $(cat Version.txt)
+    String VERSION = readFile(file: 'Version.txt')
     stage("Checkout branch $BRANCH_NAME")
     {
         checkout(scm)
@@ -50,7 +52,8 @@ node(POD_LABEL){
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
-                  docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:${VERSION} .
+
+                  docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:$VERSION .
                 """
             }
         }
@@ -61,7 +64,7 @@ node(POD_LABEL){
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
-                  docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:${VERSION}
+                  docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:$VERSION
                 """
             }
         }
