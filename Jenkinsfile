@@ -18,9 +18,6 @@ podTemplate(
       ttyEnabled: true,
       command: 'cat',
       privileged: true,
-      envVars: [
-          envVar(key: 'VERSION', value: $(cat Version.txt))
-        ]
     )
   ],
   volumes: [
@@ -32,7 +29,7 @@ podTemplate(
 )
 {
 node(POD_LABEL){
-
+    VERSION = $(cat Version.txt)
     stage("Checkout branch $BRANCH_NAME")
     {
         checkout(scm)
