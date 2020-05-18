@@ -48,7 +48,7 @@ node(POD_LABEL){
     {
         container('docker') 
         {
-            def VERSION = readFile(file: 'Version.txt')
+            def VERSION = $(cat Version.txt)
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
                   docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:${VERSION} .
@@ -60,7 +60,7 @@ node(POD_LABEL){
     {
         container('docker')
         {
-            def VERSION = readFile(file: 'Version.txt')
+            def VERSION = $(cat Version.txt)
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
                   docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:${VERSION}
