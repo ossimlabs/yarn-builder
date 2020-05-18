@@ -1,7 +1,7 @@
-VERSION = new File("Version.txt").getText()
 properties([
     parameters ([
         //string(name: 'BUILD_NODE', defaultValue: 'POD_LABEL', description: 'The build node to run on'),
+        string(name:'VERSON', )
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
     ]),
     pipelineTriggers([
@@ -18,7 +18,10 @@ podTemplate(
       image: 'docker:latest',
       ttyEnabled: true,
       command: 'cat',
-      privileged: true
+      privileged: true,
+      envVars: [
+          envVar(key: 'VERSION', value: $(cat Version.txt))
+        ]
     )
   ],
   volumes: [
@@ -62,7 +65,7 @@ node(POD_LABEL){
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
-                  docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:
+                  docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:${VERSION}
                 """
             }
         }
