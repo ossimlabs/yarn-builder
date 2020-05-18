@@ -1,6 +1,7 @@
 properties([
     parameters ([
         //string(name: 'BUILD_NODE', defaultValue: 'POD_LABEL', description: 'The build node to run on'),
+        string(name:'VERSON', )
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
     ]),
     pipelineTriggers([
@@ -17,7 +18,10 @@ podTemplate(
       image: 'docker:latest',
       ttyEnabled: true,
       command: 'cat',
-      privileged: true
+      privileged: true,
+      envVars: [
+          envVar(key: 'VERSION', value: $(cat Version.txt))
+        ]
     )
   ],
   volumes: [
@@ -48,7 +52,6 @@ node(POD_LABEL){
     {
         container('docker') 
         {
-            def VERSION = $(cat Version.txt)
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
                   docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:${VERSION} .
@@ -60,7 +63,6 @@ node(POD_LABEL){
     {
         container('docker')
         {
-            def VERSION = $(cat Version.txt)
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
                   docker push ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:${VERSION}
