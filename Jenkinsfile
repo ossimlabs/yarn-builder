@@ -31,7 +31,7 @@ podTemplate(
 {
 
 node(POD_LABEL){
-    String VERSION = readFile(file: 'Version.txt')
+    String VERSION = readFile(file: './Version.txt')
     stage("Checkout branch $BRANCH_NAME")
     {
         checkout(scm)
