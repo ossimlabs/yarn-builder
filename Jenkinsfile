@@ -31,11 +31,11 @@ podTemplate(
 {
 
 node(POD_LABEL){
-    String VERSION = readFile(file: './Version.txt')
     stage("Checkout branch $BRANCH_NAME")
     {
         checkout(scm)
     }
+    String VERSION = readFile(file: './Version.txt')
     stage("Load Variables")
     {
       withCredentials([string(credentialsId: 'o2-artifact-project', variable: 'o2ArtifactProject')]) {
