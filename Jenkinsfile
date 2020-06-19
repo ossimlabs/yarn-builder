@@ -52,8 +52,7 @@ node(POD_LABEL){
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
                 sh """
-
-                  docker build -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:$VERSION .
+                  docker build --network=host -t ${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}/omar-builder:$VERSION .
                 """
             }
         }
