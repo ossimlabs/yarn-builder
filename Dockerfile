@@ -19,4 +19,4 @@ ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openj
 ENV JAVA_VERSION 8u111
 ENV JAVA_ALPINE_VERSION 8.111.14-r0
 
-RUN set -x && apt-get install oracle-java8-installer && [ "$JAVA_HOME" = "$(docker-java-home)" ]
+RUN set -x && apt install openjdk-8-jdk && [ "$JAVA_HOME" = "$(docker-java-home)" ]
