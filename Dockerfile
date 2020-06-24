@@ -1,4 +1,4 @@
-FROM docker:latest
+FROM yarnpkg/node-yarn:latest
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
